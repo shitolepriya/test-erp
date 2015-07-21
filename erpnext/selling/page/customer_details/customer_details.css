@@ -1,0 +1,47 @@
+.btn1-default:hover{
+	background-color: '#8E8E8E';
+	color: '#8E8E8E';
+	border: 1px solid;
+    background: -webkit-linear-gradient(top, #FFFFFF, #8E8E8E);
+    margin-left: 10px;
+}
+
+.btn-sm1{
+	margin-left: 10px;
+	margin-bottom: 8px;
+	margin-top: 8px;
+	padding: 5px 10px;
+  	font-size: 12px;
+  	line-height: 1.5;
+  	border-radius: 3px;
+}
+
+.test-table{
+	margin-left: 10px;
+	margin-right: 10px;
+	border-color: #333333;
+}
+
+.customer-dtls{
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-top: 15px;
+	color: #000000;
+}
+
+.fold{
+	font-size: 16px;
+	margin-left: 10px;
+	padding-right: 5px;
+}
+
+a:hover {
+    color: #000000;
+    background-color: #D9D9D9;
+}
+
+.cont-dtls{
+	color: #000000;
+	margin-bottom: 15px;
+}
