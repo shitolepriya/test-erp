@@ -4,7 +4,10 @@ frappe.pages['customer-details'].on_page_load = function(wrapper) {
 		title: 'Customer Details',
 		single_column: true
 	});
-	$("<div class='cust-info' \
+	$("<div class='new-btn'>\
+		<button style='width:55px;'>New</button>\
+		</div>\
+		<div class='cust-info' \
 		style='min-height: 200px; padding:15px;'></div>").appendTo(page.main);
 	wrapper.customer_details = new frappe.CustomerDetails(wrapper);
 }
@@ -14,10 +17,12 @@ frappe.CustomerDetails = Class.extend({
 		this.wrapper = wrapper;
 		this.body = $(this.wrapper).find(".cust-info");
 		this.cust_list();
+		this.new_cust();
 	},
 	
 	cust_list: function() {
 		var me = this;
+		$('.cust-info').empty()
 		frappe.call({
 			method:"erpnext.selling.page.customer_details.customer_details.get_customer",
 			callback: function(r) {
@@ -52,11 +57,11 @@ frappe.CustomerDetails = Class.extend({
 			if($(this).attr("data-flag")==='true'){
 				$('.fold').attr("data-flag",true);
 				$(this).parent().find('.customer-dtls').removeClass("hide");
-				$(this).attr("data-flag", false)
+				$(this).attr("data-flag", false);
 			}
 			else{
 				$(this).parent().find('.customer-dtls').addClass("hide");
-				$(this).attr("data-flag", true)
+				$(this).attr("data-flag", true);
 			}
 		});
 		me.set_event();
@@ -84,7 +89,7 @@ frappe.CustomerDetails = Class.extend({
 
 	contact_pop_up: function(r){
 		var me = this;
-		var d = new frappe.ui.Dialog({
+		this.d = new frappe.ui.Dialog({
 			title: __("Customer Contacts")
 		});
 		if (r.message) {
@@ -100,6 +105,58 @@ frappe.CustomerDetails = Class.extend({
 			Sorry..No contact found...!\
 			</div>").appendTo($('.modal-body'))
 		}
-		d.show();
+		this.d.show();
+	},
+
+	new_cust:function(){
+		var me = this;
+		$('.new-btn').click(function(){
+			$('.modal-body').empty()
+			me.set_new_customer_dialog()
+		});
+	},
+
+	set_new_customer_dialog:function(){
+		var me = this;
+		var dia = new frappe.ui.Dialog({
+			title: __("New Customer"),
+			width:  1200,
+			fields: [			
+				{label:__("Full Name"), fieldtype:"Data", reqd: 1, fieldname:"customer_name"},
+				{label:__("Type"), fieldtype:"Select", options:["Individual", "Company"], reqd: 1, fieldname:"customer_type"},
+				{label:__("From Lead"), fieldtype:"Link", options:"Lead", fieldname:"lead_name"},
+				{fieldtype: "Column Break"},
+				{label:__("Customer Group"), fieldtype:"Link", options:"Customer Group", fieldname:"customer_group"},
+				{label:__("Territory"), fieldtype:"Link", options:"Territory", fieldname:"territory"},
+				{fieldtype: "Section Break"},
+				{label:__("Customer Details"), fieldtype:"Small Text", fieldname:"customer_details"},
+				{label:__("Currency"), fieldtype:"Link", options:"Currency", fieldname:"default_currency"},
+				{label:__("Price List"), fieldtype:"Link", options:"Price List", fieldname:"default_price_list"},
+				{fieldtype: "Column Break"},
+				{label:__("Taxes and Charges"), fieldtype:"Link", options:"Sales Taxes and Charges Template", fieldname:"default_taxes_and_charges"},
+				{label:__("Credit days based On"), fieldtype:"Select", options:["Fixed Days","Last Day of the Next Month"], fieldname:"credit_days_based_on"},
+				{label:__("Credit Limit"), fieldtype:"Currency", options:"Credit Limit", fieldname:"credit_limit"},
+				{label:__("Website"), fieldtype:"Data", options:"Website", fieldname:"website"},
+				{fieldtype: "Section Break"},
+				{label:__("Save"), fieldtype:"Button", fieldname:"save_cust"}
+			]
+		});
+		
+		dia.show();
+		
+		$(dia.fields_dict.save_cust.input).click(function() {
+			var v = {};
+			v = dia.get_values();
+			frappe.call({
+				method: "erpnext.selling.page.customer_details.customer_details.create_cust",
+				args: { 
+					"values" : v
+				},
+				callback: function(r) {
+					dia.hide();
+					me.cust_list();
+				}
+			});
+		});
 	},
 })

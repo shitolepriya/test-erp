@@ -45,3 +45,31 @@ a:hover {
 	color: #000000;
 	margin-bottom: 15px;
 }
+
+.cust-info{
+	margin-right: 15px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+.layout-main-section{
+	border-top: 0px;
+}
+
+.new-btn{
+	margin-top: 15px;
+	margin-left: 15px;
+	text-align: right;
+	margin-right: 25px;
+	background: #FFFFFF;
+	background-image: -webkit-linear-gradient(top, #FFFFFF, #FFFFFF);
+
+	/*-moz-box-shadow:rgba(0,0,0,0.98) 0 1px 0 0;
+	background-color:#EEE;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	color:#666;
+	font-family:'Lucida Grande',Tahoma,Verdana,Arial,Sans-serif;
+	font-size:11px;
+	font-weight:700;
+	padding:2px 6px;*/
+}

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import frappe
 import frappe.defaults
+import json
 
 @frappe.whitelist()
 def get_customer():
@@ -16,3 +17,22 @@ def get_contact(value):
 		IFNULL(customer,' ')as customer, IFNULL(email_id,' ')as email_id, IFNULL(phone,' ')as phone from `tabContact` where 
 		customer_name='%s'"""%(value),as_list=1)
 	return contacts
+
+@frappe.whitelist()
+def create_cust(values):
+	values = json.loads(values)
+	cust = frappe.new_doc("Customer")
+	cust.customer_name = values['customer_name']
+	cust.customer_type = values['customer_type']
+	cust.lead_name = values.get('lead_name')
+	cust.customer_group = values.get('customer_group')
+	cust.territory = values.get('territory')
+	cust.customer_details = values.get('customer_details')
+	cust.default_currency = values.get('default_currency')
+	cust.default_price_list = values.get('default_price_list')
+	cust.default_taxes_and_charges = values.get('default_taxes_and_charges')
+	cust.credit_days_based_on = values.get('credit_days_based_on')
+	cust.credit_limit = values.get('credit_limit')
+	cust.website = values.get('website')
+	cust.insert()
+	return cust.name
