@@ -4,8 +4,8 @@ frappe.pages['customer-details'].on_page_load = function(wrapper) {
 		title: 'Customer Details',
 		single_column: true
 	});
-	$("<div class='new-btn'>\
-		<button style='width:55px;'>New</button>\
+	$("<div>\
+		<button class='btn2 btn-sm2 btn2-default style='width:61px;'><b>New</b></button>\
 		</div>\
 		<div class='cust-info' \
 		style='min-height: 200px; padding:15px;'></div>").appendTo(page.main);
@@ -110,7 +110,7 @@ frappe.CustomerDetails = Class.extend({
 
 	new_cust:function(){
 		var me = this;
-		$('.new-btn').click(function(){
+		$('.btn2').click(function(){
 			$('.modal-body').empty()
 			me.set_new_customer_dialog()
 		});
@@ -126,8 +126,8 @@ frappe.CustomerDetails = Class.extend({
 				{label:__("Type"), fieldtype:"Select", options:["Individual", "Company"], reqd: 1, fieldname:"customer_type"},
 				{label:__("From Lead"), fieldtype:"Link", options:"Lead", fieldname:"lead_name"},
 				{fieldtype: "Column Break"},
-				{label:__("Customer Group"), fieldtype:"Link", options:"Customer Group", fieldname:"customer_group"},
-				{label:__("Territory"), fieldtype:"Link", options:"Territory", fieldname:"territory"},
+				{label:__("Customer Group"), fieldtype:"Link", options:"Customer Group", reqd: 1, fieldname:"customer_group"},
+				{label:__("Territory"), fieldtype:"Link", options:"Territory", reqd: 1, fieldname:"territory"},
 				{fieldtype: "Section Break"},
 				{label:__("Customer Details"), fieldtype:"Small Text", fieldname:"customer_details"},
 				{label:__("Currency"), fieldtype:"Link", options:"Currency", fieldname:"default_currency"},
