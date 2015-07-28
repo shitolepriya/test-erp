@@ -5,7 +5,7 @@ frappe.pages['customer-details'].on_page_load = function(wrapper) {
 		single_column: true
 	});
 	$("<div class='new-btn'>\
-		<button style='width:55px;'>New</button>\
+		<button class='new-btn1 style='width:55px;'>New</button>\
 		</div>\
 		<div class='cust-info' \
 		style='min-height: 200px; padding:15px;'></div>").appendTo(page.main);
@@ -16,15 +16,55 @@ frappe.CustomerDetails = Class.extend({
 	init: function(wrapper) {
 		this.wrapper = wrapper;
 		this.body = $(this.wrapper).find(".cust-info");
+		this.filters();
 		this.cust_list();
 		this.new_cust();
 	},
-	
-	cust_list: function() {
+
+	filters: function(){
+		$search = $("<button class='search-btn'><b>Search</b></button>").appendTo($('.page-form'));
+		var me = this;
+		me.customer_name = me.wrapper.page.add_field({
+			fieldname: "customer_name",
+			label: __("Customer Name"),
+			fieldtype: "Link",
+			options: "Customer"
+		});
+		me.customer_type = me.wrapper.page.add_field({
+			fieldname: "customer_type",
+			label: __("Customer Type"),
+			fieldtype: "Select",
+			options:[" ","Individual", "Company"]
+		});
+		me.territory = me.wrapper.page.add_field({
+			fieldname: "territory",
+			label: __("Territory"),
+			fieldtype: "Link",
+			options: "Territory"
+		});
+
+		$(".search-btn").on("click", function() {
+			var cust_flt = me.customer_name.$input.val();
+			var cust_type = me.customer_type.$input.val();
+			var cust_territory = me.territory.$input.val();
+			var filters = {};
+			filters = {
+				"cust_flt": cust_flt,
+				"cust_type": cust_type,
+				"cust_territory": cust_territory
+			}
+			me.cust_list(filters);
+		});
+	},
+
+	cust_list: function(filters) {
 		var me = this;
 		$('.cust-info').empty()
 		frappe.call({
 			method:"erpnext.selling.page.customer_details.customer_details.get_customer",
+			args:{
+					"filters":filters
+				},
 			callback: function(r) {
 				me.cust_table(r.message);
 			}
@@ -110,7 +150,7 @@ frappe.CustomerDetails = Class.extend({
 
 	new_cust:function(){
 		var me = this;
-		$('.new-btn').click(function(){
+		$('.new-btn1').click(function(){
 			$('.modal-body').empty()
 			me.set_new_customer_dialog()
 		});
