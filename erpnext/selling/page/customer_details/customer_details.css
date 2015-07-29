@@ -62,13 +62,33 @@ a:hover {
 	border: 1px solid;
 }
 
+.btn-sm2:hover{
+	background-color: #8E8E8E;
+	background: -webkit-linear-gradient(top, #FFFFFF, #8E8E8E);
+}
+
 .btn-sm2{
 	margin-top: 15px;
-	margin-left: 1050px;
+	margin-bottom: 10px;
+	float :right;
 	width:60px;
 	height: 28px;
 	margin-right: 25px;
   	border-radius: 3px;
+  	font-size: 13px;
+  	line-height: 1.5;
+}
+
+.btn-sm3:hover{
+	background-color: #8E8E8E;
+	background: -webkit-linear-gradient(top, #FFFFFF, #8E8E8E);
+}
+
+.btn-sm3{
+	margin-left: 10px;
+	width:71px;
+	height: 30px;
+	border-radius: 3px;
   	font-size: 13px;
   	line-height: 1.5;
 }
