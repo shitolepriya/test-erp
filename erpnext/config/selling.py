@@ -37,6 +37,13 @@ def get_data():
 					"name": "Item",
 					"description": _("All Products or Services."),
 				},
+				{
+					"type": "page",
+					"label": _("Customer Details"),
+					"name": "customer-details",
+					"icon": "icon-sitemap",
+					"description": _("Shows Customer Details"),
+				},
 			]
 		},
 		{

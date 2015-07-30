@@ -17,12 +17,14 @@ frappe.CustomerDetails = Class.extend({
 		this.wrapper = wrapper;
 		this.body = $(this.wrapper).find(".cust-info");
 		this.filters();
+		this.save_as_pdf();
 		this.cust_list();
 		this.new_cust();
 	},
 
 	filters: function(){
 		$search = $("<button class='search-btn btn-sm3'><b>Search</b></button>").appendTo($('.page-form'));
+		$save_pdf = $("<button class='pdf-btn btn-sm4'><b>Save As PDF</b></button>").appendTo($('.page-form'));
 		var me = this;
 		me.customer_name = me.wrapper.page.add_field({
 			fieldname: "customer_name",
@@ -133,11 +135,12 @@ frappe.CustomerDetails = Class.extend({
 			title: __("Customer Contacts")
 		});
 		if (r.message) {
+			$('<div class="contacts"></div>').appendTo($('.modal-body'))
 			$.each(r.message, function( i, val ) {
 				$(repl('<div class="cont-dtls" style="padding:15px; background-color: #E6E6E6;"> First Name : %(First_Name)s<br>Last Name : \
 					%(Last_Name)s<br> Customer Name : %(Customer_Name)s<br>Email ID : %(Email_ID)s<br>\
 					Phone No : %(Phone_No)s</div>',{First_Name: val[0],
-				Last_Name: val[1],Customer_Name: val[2],Email_ID: val[3],Phone_No: val[4]})).appendTo($('.modal-body'))
+				Last_Name: val[1],Customer_Name: val[2],Email_ID: val[3],Phone_No: val[4]})).appendTo($('.contacts'))
 			});
 		}
 		else{
@@ -195,6 +198,18 @@ frappe.CustomerDetails = Class.extend({
 				callback: function(r) {
 					dia.hide();
 					me.cust_list();
+				}
+			});
+		});
+	},
+
+	save_as_pdf: function(){
+		$('.pdf-btn').click(function(){
+			var me = this;
+			frappe.call({
+				method: "erpnext.selling.page.customer_details.customer_details.save_pdf",
+				callback: function(){
+					alert("Save PDF Successfully..!!!")
 				}
 			});
 		});

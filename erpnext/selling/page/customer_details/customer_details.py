@@ -48,4 +48,45 @@ def condition(filters):
 		conditions.append("territory='%(cust_territory)s'"%filters)
 
 	return " where "+" and ".join(conditions) if conditions else ""
+
+@frappe.whitelist()
+def save_pdf():
+	import pdfkit
+	from frappe.utils import get_files_path
+	import os
+
+	data = get_customer()
+	cust_rows = ''
+	for row in data:
+		cust_rows += "<tr style='border: 1px solid black; border-collapse: collapse;''><td>%s</td></tr>"%(row[0])
 		
+	html_str = """
+		<html>
+			<body>
+				<style type="text/css">
+					.table {
+						border-collapse: collapse;
+					}
+					.table th,
+					.table td {
+						border: 1px solid black;
+						text-align: center;
+					}
+					.table-striped tbody > tr:nth-child(odd) > td,
+					.table-striped tbody > tr:nth-child(odd) > th {
+						background-color: #FFFFFF;
+					}
+				</style>
+				<table class="table table-striped">
+					<thead>
+						%(header)s
+					</thead>
+					<tbody>
+						%(cust_rows)s
+					</tbody>
+				</table>
+			</body>
+		</html>
+	"""%{'cust_rows': cust_rows, 'header': '<th>Customer Name</th>'}
+	pdfkit.from_string(html_str, os.path.join(get_files_path(), 'customer.pdf'))
+
